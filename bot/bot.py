@@ -19,7 +19,7 @@ class Bot:
             :param visiblePlayers:  The list of visible players.
         """
        
-        return create_attack_action(Point(1,0))
+        
         res = list()
         for x in range(gameMap.xMin,gameMap.xMax):
             for y in range(gameMap.yMin, gameMap.yMax):
