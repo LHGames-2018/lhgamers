@@ -12,7 +12,7 @@ def getPath(gameMap, position, destination):
         mapContent[i] = []
         for j in range(gameMap.yMin, gameMap.yMax):
             mapTile[i][j] = gameMap.tiles[i][j]
-            mapContent[i][j] = gameMap.tiles[index].TileContent
+            mapContent[i][j] = gameMap.tiles[i][j].TileContent
     subMapTile = []
     subMapContent = []
     x = -1
@@ -22,11 +22,11 @@ def getPath(gameMap, position, destination):
     posDestX = 0
     posDestY = 0
 
-    for i in range(position.x, destination.x, copysign(-1,destination.x - postion.x)):
+    for i in range(position.x, destination.x, copysign(-1,destination.x - position.x)):
         x+=1
         subMapTile[x] = []
         subMapContent[x] = []
-        for j in range(gameMap.yMin, gameMap.yMax, copysign(-1,destination.y - postion.y)):
+        for j in range(gameMap.yMin, gameMap.yMax, copysign(-1,destination.y - position.y)):
             subMapTile[x][y] = mapTile[i][j]
             subMapContent[x][y] = mapTile[i][j].TileContent
             if mapTile[i][j].Position.x == position.x and  mapTile[i][j].Position.y == position.y:
@@ -55,13 +55,11 @@ def getPath(gameMap, position, destination):
         [TileContent.Empty,TileContent.Empty,TileContent.Empty]
         ]
 
-    print("translate : {}".format(translate(subMatContent)))
-    print("findPath : {}".format(find_shortest_path(translate(subMatContent),"{},{}".format(posDepartX, posDepartY),"{},{}".format(posDestX, posDestY))))
-    p1rel2 = goingTo(pathStrToPoint(find_shortest_path(translate(subMatContent),"{},{}".format(posDepartX, posDepartY),"{},{}".format(posDestX, posDestY))))
+    print("translate : {}".format(translate(subMapContent)))
+    print("findPath : {}".format(find_shortest_path(translate(subMapContent),"{},{}".format(posDepartX, posDepartY),"{},{}".format(posDestX, posDestY))))
+    p1rel2 = goingTo(pathStrToPoint(find_shortest_path(translate(subMapContent),"{},{}".format(posDepartX, posDepartY),"{},{}".format(posDestX, posDestY))))
     print(p1rel2)
     return p1rel2
     for e in p1rel2:
         print(e.__str__())
 
-if __name__ == "__main__" :
-    main()
