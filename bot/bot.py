@@ -55,7 +55,7 @@ class Bot:
             print(self.PlayerInfo.TotalResources)
             if Point.Distance(self.PlayerInfo.Position, closestRes) <= 1:
                 if self.PlayerInfo.TotalResources >= self.PlayerInfo.CarryingCapacity:
-                self.goingToHouse = True
+                    self.goingToHouse = True
                 if(direction.x !=0):
                     dirX = int(direction.x/abs(direction.x))
                 else:
