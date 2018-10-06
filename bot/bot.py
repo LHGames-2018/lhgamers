@@ -27,6 +27,8 @@ class Bot:
             return create_attack_action(Point(0,1))
         elif(gameMap.getTileAt(self.PlayerInfo.Position+Point(0,-1)).TileContent == TileContent.Player):
             return create_attack_action(Point(0,-1))
+        if self.PlayerInfo.CarriedResources >= self.PlayerInfo.CarryingCapacity:
+            self.goingToHouse = True
         res = list()
         for x in range(gameMap.xMin,gameMap.xMax):
             for y in range(gameMap.yMin, gameMap.yMax):
@@ -43,21 +45,7 @@ class Bot:
             pathFound = False
             while not pathFound:
                 closestRes = res[index]
-                # playerPosition = self.PlayerInfo.Position
-                # while Point.Distance(playerPosition, closestRes) > 1:
-                #     print(playerPosition)
-                #     position = self.getPath(playerPosition, closestRes, gameMap)
-                #     if not position:
-                #         if not index+1 >= len(res):
-                #             index+=1
-                #         else:
-                #             self.goingToHouse = True
-                #             return
-                #         break
-                #     else:
-                #         playerPosition = position
-                # if Point.Distance(playerPosition, closestRes) <= 1:
-                #     pathFound = True
+
                 path = list()
                 if gameMap.getTileAt(closestRes-Point(1,0)).TileContent == TileContent.Empty:
                     path = shortestPath(translate(gameMap.tiles), self.PlayerInfo.Position, (closestRes-Point(1,0)))
@@ -84,8 +72,6 @@ class Bot:
             print(self.PlayerInfo.TotalResources)
             collectDir = closestRes - self.PlayerInfo.Position
             if Point.Distance(self.PlayerInfo.Position, closestRes) <= 1:
-                if self.PlayerInfo.CarriedResources >= self.PlayerInfo.CarryingCapacity:
-                    self.goingToHouse = True
                 if(collectDir.x !=0):
                     dirX = int(collectDir.x/abs(collectDir.x))
                 else:
@@ -100,7 +86,7 @@ class Bot:
             
         else:
             path = shortestPath(translate(gameMap.tiles), self.PlayerInfo.Position, self.PlayerInfo.HouseLocation)
-            if len(path):
+            if len(path)>1:
                 direction = path[1] - self.PlayerInfo.Position
             else:
                 self.goingToHouse = False 
