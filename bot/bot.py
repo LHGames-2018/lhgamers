@@ -52,15 +52,32 @@ class Bot:
             print(direction)
             print(self.PlayerInfo.TotalResources)
             if Point.Distance(self.PlayerInfo.Position, closestRes) <= 1:
-                return create_collect_action(Point(int(direction.x/abs(direction.x))))
+                if(direction.x !=0):
+                    dirX = int(direction.x/abs(direction.x))
+                else:
+                    dirX = 0
+                if(direction.y != 0):
+                    dirY = int(direction.y/abs(direction.y))
+                else:
+                    dirY = 0
+
+                return create_collect_action(Point(dirX, dirY))
             if self.PlayerInfo.TotalResources >= self.PlayerInfo.CarryingCapacity:
                 self.goingToHouse = True
         else:
             direction = house - self.PlayerInfo.Position
         if abs(direction.x) < abs(direction.y):
-            return create_move_action(Point(0, int(direction.y/abs(direction.y))))
+            if(direction.y != 0):
+                dirY = int(direction.y/abs(direction.y))
+            else:
+                dirY = 0
+            return create_move_action(Point(0, dirY))
         else:
-            return create_move_action(Point(int(direction.x/abs(direction.x)), 0))
+            if(direction.x !=0):
+                dirX = int(direction.x/abs(direction.x))
+            else:
+                dirX = 0
+            return create_move_action(Point(dirX, 0))
         # Write your bot here. Use functions from aiHelper to instantiate your actions.
         return create_move_action(Point(-1, 0))
 
