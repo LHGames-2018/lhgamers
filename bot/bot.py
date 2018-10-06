@@ -4,7 +4,8 @@ from extra.graphtraduction import translate
 class Bot:
     def __init__(self):
         self.goingToHouse = False
-
+        self.previousPosition = None
+        self.previousDirection = None
 
     def before_turn(self, playerInfo):
         """
@@ -87,10 +88,21 @@ class Bot:
         else:
             path = shortestPath(translate(gameMap.tiles), self.PlayerInfo.Position, self.PlayerInfo.HouseLocation)
             if len(path)>1:
+                if(self.previousPosition == self.PlayerInfo.Position):
+                    if(gameMap.getTileAt(self.PlayerInfo.Position+self.previousDirection).TileContent == TileContent.Wall):
+                        return create_attack_action(self.previousDirection)
+                    if(gameMap.getTileAt(self.PlayerInfo.Position+self.previousDirection).TileContent == TileContent.Resource):
+                        return create_collect_action(self.previousDirection)
+                    if(self.previousDirection.y != 1):
+                        return create_move_action(Point(0,1))
+                    else :
+                        return create_move_action(Point(1, 0))
                 direction = path[1] - self.PlayerInfo.Position
             else:
                 self.goingToHouse = False 
                 return self.upgrade()
+            self.previousPosition = self.PlayerInfo.Position
+            self.previousDirection = direction
         if abs(direction.x) < abs(direction.y):
             if(direction.y != 0):
                 dirY = int(direction.y/abs(direction.y))
