@@ -113,6 +113,8 @@ class Bot:
     def upgrade(self):
         if(self.PlayerInfo.getUpgradeLevel(UpgradeType.CollectingSpeed)< self.PlayerInfo.getUpgradeLevel(UpgradeType.CarryingCapacity) ):
             return create_upgrade_action(UpgradeType.CollectingSpeed)
+        elif(self.PlayerInfo.getUpgradeLevel(UpgradeType.AttackPower) < self.PlayerInfo.getUpgradeLevel(UpgradeType.CarryingCapacity)):
+            return create_upgrade_action(UpgradeType.AttackPower)
         else:
             return create_upgrade_action(UpgradeType.CarryingCapacity)
 
