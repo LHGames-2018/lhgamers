@@ -53,7 +53,9 @@ class Bot:
             print(self.PlayerInfo.Position)
             print(direction)
             print(self.PlayerInfo.TotalResources)
-            if Point.Distance(self.PlayerInfo.Position, closestRes) <= 1 and self.goingToHouse == False:
+            if Point.Distance(self.PlayerInfo.Position, closestRes) <= 1:
+                if self.PlayerInfo.TotalResources >= self.PlayerInfo.CarryingCapacity:
+                self.goingToHouse = True
                 if(direction.x !=0):
                     dirX = int(direction.x/abs(direction.x))
                 else:
@@ -65,8 +67,7 @@ class Bot:
                 if(dirX ==0 and dirY==0):
                     self.goingToHouse = True
                 return create_collect_action(Point(dirX, dirY))
-            if self.PlayerInfo.TotalResources >= self.PlayerInfo.CarryingCapacity:
-                self.goingToHouse = True
+            
         else:
             direction = self.PlayerInfo.HouseLocation - self.PlayerInfo.Position
             if direction.x ==0 and direction.y == 0 :
