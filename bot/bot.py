@@ -18,7 +18,7 @@ class Bot:
             :param gameMap: The gamemap.
             :param visiblePlayers:  The list of visible players.
         """
-        return create_move_action(Point(-1, 0))
+       
 
         res = list()
         for x in range(gameMap.xMin,gameMap.xMax):
