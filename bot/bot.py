@@ -106,7 +106,7 @@ class Bot:
             newPosition = playerPosition+(Point(0, int(direction.y/abs(direction.y))))
         else:
             newPosition = playerPosition+(Point(int(direction.x/abs(direction.x)), 0))
-        if gameMap.getTileAt(newPosition) == TileContent.Empty:
+        if gameMap.getTileAt(newPosition).TileContent == TileContent.Empty:
             return newPosition
         return None
 
