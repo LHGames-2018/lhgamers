@@ -3,7 +3,8 @@ from helper import *
 class Bot:
     def __init__(self):
         self.goingToHouse = False
-
+        self.previousPosition = None
+        self.previousDirection = None
 
     def before_turn(self, playerInfo):
         """
@@ -81,10 +82,19 @@ class Bot:
                 return create_collect_action(Point(dirX, dirY))
             
         else:
+            if(self.previousPosition == self.PlayerInfo.Position):
+                if(gameMap.getTileAt(self.PlayerInfo.Position+self.previousDirection).TileContent == TileContent.Wall):
+                    return create_attack_action(self.previousDirection)
+                if(self.previousDirection.y != -1):
+                    return create_move_action(Point(0,-1))
+                else :
+                    return create_move_action(Point(1, 0))
             direction = self.PlayerInfo.HouseLocation - self.PlayerInfo.Position
             if direction.x ==0 and direction.y == 0 :
                 self.goingToHouse = False 
                 return self.upgrade()
+            self.previousPosition = self.PlayerInfo.Position
+            self.previousDirection = direction
         if abs(direction.x) < abs(direction.y):
             if(direction.y != 0):
                 dirY = int(direction.y/abs(direction.y))
