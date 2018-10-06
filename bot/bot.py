@@ -20,7 +20,7 @@ class Bot:
         """
         res = list()
         for x in range(gameMap.xMax):
-            for y in (gameMap.yMax):
+            for y in range(gameMap.yMax):
                 if gameMap.getTileAt(Point(x,y)) == 4:
                     res.append(Point(x,y))
                 elif gameMap.getTileAt(Point(x,y)) == 2:
