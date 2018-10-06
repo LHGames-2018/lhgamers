@@ -26,7 +26,6 @@ class Bot:
                 elif gameMap.getTileAt(Point(x,y)) == TileContent.House:
                     house = Point(x,y)
         if not self.goingToHouse:
-            minDist = float('inf')
             res.sort(key=lambda p: Point.Distance(p, self.PlayerInfo.Position))
             print(res)
             if not len(res):
@@ -63,7 +62,8 @@ class Bot:
                     dirY = int(direction.y/abs(direction.y))
                 else:
                     dirY = 0
-
+                if(dirX ==0 and dirY==0):
+                    return create_move_action(Point(-1, 0))
                 return create_collect_action(Point(dirX, dirY))
             if self.PlayerInfo.TotalResources >= self.PlayerInfo.CarryingCapacity:
                 self.goingToHouse = True
@@ -71,6 +71,7 @@ class Bot:
             direction = self.PlayerInfo.HouseLocation - self.PlayerInfo.Position
             if direction.x ==0 and direction.y == 0 :
                 self.goingToHouse = False 
+                return create_upgrade_action(UpgradeType.CollectingSpeed)
         if abs(direction.x) < abs(direction.y):
             if(direction.y != 0):
                 dirY = int(direction.y/abs(direction.y))
@@ -101,4 +102,7 @@ class Bot:
         if gameMap.getTileAt(newPosition) == TileContent.Empty:
             return newPosition
         return None
+
+    def findClosestResource(self, gameMap):
+        pass
 

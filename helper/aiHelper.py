@@ -10,6 +10,15 @@ def create_move_action(direction):
     """
     return _create_action("MoveAction", direction)
 
+def create_upgrade_action(item):
+    """
+    Creates a upgrade action for the specified type. You need to be ON
+    your house for this action to succeed. If you are on any other
+    type of tile, the action will fail. You can only upgrade 5 times for one type
+        :param item: The type of upgrade.
+    """
+    return _create_action("UpgradeAction", item)
+
 
 def create_attack_action(direction):
     """
