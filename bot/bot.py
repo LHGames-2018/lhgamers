@@ -19,8 +19,14 @@ class Bot:
             :param gameMap: The gamemap.
             :param visiblePlayers:  The list of visible players.
         """
-       
-        
+        if(gameMap.getTileAt(self.PlayerInfo.Position+Point(1,0)).TileContent == TileContent.Player):
+            return create_attack_action(Point(1,0))
+        elif(gameMap.getTileAt(self.PlayerInfo.Position+Point(-1,0)).TileContent == TileContent.Player):
+            return create_attack_action(Point(-1,0))
+        elif(gameMap.getTileAt(self.PlayerInfo.Position+Point(0,1)).TileContent == TileContent.Player):
+            return create_attack_action(Point(0,1))
+        elif(gameMap.getTileAt(self.PlayerInfo.Position+Point(0,-1)).TileContent == TileContent.Player):
+            return create_attack_action(Point(0,-1))
         res = list()
         for x in range(gameMap.xMin,gameMap.xMax):
             for y in range(gameMap.yMin, gameMap.yMax):
@@ -133,5 +139,7 @@ class Bot:
     def upgrade(self):
         if(self.PlayerInfo.getUpgradeLevel(UpgradeType.CollectingSpeed)< self.PlayerInfo.getUpgradeLevel(UpgradeType.CarryingCapacity) ):
             return create_upgrade_action(UpgradeType.CollectingSpeed)
+        elif(self.PlayerInfo.getUpgradeLevel(UpgradeType.AttackPower) < self.PlayerInfo.getUpgradeLevel(UpgradeType.CarryingCapacity)):
+            return create_upgrade_action(UpgradeType.AttackPower)
         else:
             return create_upgrade_action(UpgradeType.CarryingCapacity)
