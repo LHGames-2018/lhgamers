@@ -29,6 +29,9 @@ class Bot:
             minDist = float('inf')
             res.sort(key=lambda p: Point.Distance(p, self.PlayerInfo.Position))
             print(res)
+            if not len(res):
+                self.goingToHouse=True
+                return
             index = 0
             pathFound = False
             while not pathFound:
@@ -67,7 +70,7 @@ class Bot:
         else:
             direction = house - self.PlayerInfo.Position
             if direction.x ==0 and direction.y == 0 :
-                self.goingToHouse = False
+                self.goingToHouse = False 
         if abs(direction.x) < abs(direction.y):
             if(direction.y != 0):
                 dirY = int(direction.y/abs(direction.y))
