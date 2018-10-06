@@ -1,5 +1,5 @@
 from helper import *
-
+from myTest import getPath
 class Bot:
     def __init__(self):
         self.goingToHouse = False
@@ -37,24 +37,29 @@ class Bot:
             pathFound = False
             while not pathFound:
                 closestRes = res[index]
-                playerPosition = self.PlayerInfo.Position
-                while Point.Distance(playerPosition, closestRes) > 1:
-                    print(playerPosition)
-                    position = self.getPath(playerPosition, closestRes, gameMap)
-                    if not position:
-                        if not index+1 >= len(res):
-                            index+=1
-                        else:
-                            self.goingToHouse = True
-                            return
-                        break
-                    else:
-                        playerPosition = position
-                if Point.Distance(playerPosition, closestRes) <= 1:
+                # playerPosition = self.PlayerInfo.Position
+                # while Point.Distance(playerPosition, closestRes) > 1:
+                #     print(playerPosition)
+                #     position = self.getPath(playerPosition, closestRes, gameMap)
+                #     if not position:
+                #         if not index+1 >= len(res):
+                #             index+=1
+                #         else:
+                #             self.goingToHouse = True
+                #             return
+                #         break
+                #     else:
+                #         playerPosition = position
+                # if Point.Distance(playerPosition, closestRes) <= 1:
+                #     pathFound = True
+                direction = getPath(gameMap, self.PlayerInfo.Position, res[index])
+                if direction:
                     pathFound = True
+                else:
+                    index += 1
 
-
-            direction = closestRes - self.PlayerInfo.Position
+            # direction = closestRes - self.PlayerInfo.Position
+            direction = direction[0]
             print(closestRes)
             print(self.PlayerInfo.Position)
             print(direction)
@@ -100,15 +105,15 @@ class Bot:
         """
         pass
 
-    def getPath(self, playerPosition, destination, gameMap):
-        direction = destination - playerPosition
-        if abs(direction.x) < abs(direction.y):
-            newPosition = playerPosition+(Point(0, int(direction.y/abs(direction.y))))
-        else:
-            newPosition = playerPosition+(Point(int(direction.x/abs(direction.x)), 0))
-        if gameMap.getTileAt(newPosition).TileContent == TileContent.Empty:
-            return newPosition
-        return None
+    # def getPath(self, playerPosition, destination, gameMap):
+    #     direction = destination - playerPosition
+    #     if abs(direction.x) < abs(direction.y):
+    #         newPosition = playerPosition+(Point(0, int(direction.y/abs(direction.y))))
+    #     else:
+    #         newPosition = playerPosition+(Point(int(direction.x/abs(direction.x)), 0))
+    #     if gameMap.getTileAt(newPosition).TileContent == TileContent.Empty:
+    #         return newPosition
+    #     return None
 
     def upgrade(self):
         if(self.PlayerInfo.getUpgradeLevel(UpgradeType.CollectingSpeed)< self.PlayerInfo.getUpgradeLevel(UpgradeType.CarryingCapacity) ):

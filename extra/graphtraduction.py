@@ -1,6 +1,8 @@
 from helper.tile import *
 def translate (mat):
     graph = {}
+    print("LONGUEURRRRR")
+    print(len(mat[:]))
     for col in range(len(mat[:])):
         for row in range(len(mat[col])):
             if isValidTile(mat[row][col]):
