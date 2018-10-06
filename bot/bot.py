@@ -68,7 +68,7 @@ class Bot:
             if self.PlayerInfo.TotalResources >= self.PlayerInfo.CarryingCapacity:
                 self.goingToHouse = True
         else:
-            direction = house - self.PlayerInfo.Position
+            direction = self.PlayerInfo.HouseLocation - self.PlayerInfo.Position
             if direction.x ==0 and direction.y == 0 :
                 self.goingToHouse = False 
         if abs(direction.x) < abs(direction.y):
