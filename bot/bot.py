@@ -1,5 +1,6 @@
 from helper import *
-from myTest import getPath
+from bot.dijkstra import shortestPath
+from extra.graphtraduction import translate
 class Bot:
     def __init__(self):
         self.goingToHouse = False
@@ -29,7 +30,6 @@ class Bot:
                     house = Point(x,y)
         if not self.goingToHouse:
             res.sort(key=lambda p: Point.Distance(p, self.PlayerInfo.Position))
-            print(res)
             if not len(res):
                 self.goingToHouse=True
                 return
@@ -52,27 +52,40 @@ class Bot:
                 #         playerPosition = position
                 # if Point.Distance(playerPosition, closestRes) <= 1:
                 #     pathFound = True
-                direction = getPath(gameMap, self.PlayerInfo.Position, res[index])
-                if direction:
+                path = list()
+                if gameMap.getTileAt(closestRes-Point(1,0)).TileContent == TileContent.Empty:
+                    path = shortestPath(translate(gameMap.tiles), self.PlayerInfo.Position, (closestRes-Point(1,0)))
+                    print(path)
+                elif gameMap.getTileAt(closestRes-Point(0,1)).TileContent == TileContent.Empty and len(path) == 0 :
+                    path = shortestPath(translate(gameMap.tiles), self.PlayerInfo.Position, (closestRes-Point(0,1)))
+                elif gameMap.getTileAt(closestRes+Point(1,0)).TileContent == TileContent.Empty and len(path) == 0:
+                    path = shortestPath(translate(gameMap.tiles), self.PlayerInfo.Position, (closestRes+Point(1,0)))
+                    print(path)
+                elif gameMap.getTileAt(closestRes+Point(0,1)).TileContent == TileContent.Empty and len(path) == 0:
+                    path = shortestPath(translate(gameMap.tiles), self.PlayerInfo.Position, (closestRes+Point(0,1)))
+                else:
+                    index += 1
+                if len(path) > 0:
                     pathFound = True
                 else:
                     index += 1
 
             # direction = closestRes - self.PlayerInfo.Position
-            direction = direction[0]
+            direction = path[1] - self.PlayerInfo.Position
             print(closestRes)
             print(self.PlayerInfo.Position)
             print(direction)
             print(self.PlayerInfo.TotalResources)
+            collectDir = closestRes - self.PlayerInfo.Position
             if Point.Distance(self.PlayerInfo.Position, closestRes) <= 1:
-                if self.PlayerInfo.TotalResources >= self.PlayerInfo.CarryingCapacity:
+                if self.PlayerInfo.CarriedResources >= self.PlayerInfo.CarryingCapacity:
                     self.goingToHouse = True
-                if(direction.x !=0):
-                    dirX = int(direction.x/abs(direction.x))
+                if(collectDir.x !=0):
+                    dirX = int(collectDir.x/abs(collectDir.x))
                 else:
                     dirX = 0
-                if(direction.y != 0):
-                    dirY = int(direction.y/abs(direction.y))
+                if(collectDir.y != 0):
+                    dirY = int(collectDir.y/abs(collectDir.y))
                 else:
                     dirY = 0
                 if(dirX ==0 and dirY==0):
@@ -80,8 +93,10 @@ class Bot:
                 return create_collect_action(Point(dirX, dirY))
             
         else:
-            direction = self.PlayerInfo.HouseLocation - self.PlayerInfo.Position
-            if direction.x ==0 and direction.y == 0 :
+            path = shortestPath(translate(gameMap.tiles), self.PlayerInfo.Position, self.PlayerInfo.HouseLocation)
+            if len(path):
+                direction = path[1] - self.PlayerInfo.Position
+            else:
                 self.goingToHouse = False 
                 return self.upgrade()
         if abs(direction.x) < abs(direction.y):
@@ -120,4 +135,3 @@ class Bot:
             return create_upgrade_action(UpgradeType.CollectingSpeed)
         else:
             return create_upgrade_action(UpgradeType.CarryingCapacity)
-

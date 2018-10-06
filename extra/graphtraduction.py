@@ -1,27 +1,25 @@
 from helper.tile import *
 def translate (mat):
+    # print(mat)
     graph = {}
-    print("LONGUEURRRRR")
-    print(len(mat[:]))
-    for col in range(len(mat[:])):
-        for row in range(len(mat[col])):
-            if isValidTile(mat[row][col]):
-                graph["{},{}".format(row,col)] = neighbours(row,col,mat)
+    for row in range(len(mat)):
+        for col in range(len(mat[row])):
+            graph[(mat[row][col].Position)] = neighbours(row,col,mat)
     return graph
 
 def neighbours(row,col,mat):
-    neighbours = []
-    if(row-1 >= 0 and isValidTile(mat[row-1][col])): 
-        neighbours.append("{},{}".format(row-1,col))
+    neighbours = dict()
+    if(row-1 >= 0 and isValidTile(mat[row-1][col].TileContent)): 
+        neighbours[(mat[row-1][col].Position)] = 1
 
-    if(col-1 >= 0 and isValidTile(mat[row][col-1])): 
-        neighbours.append("{},{}".format(row,col-1))
+    if(col-1 >= 0 and isValidTile(mat[row][col-1].TileContent)): 
+        neighbours[(mat[row][col-1].Position)] = 1
 
-    if(row+1 < len(mat[:]) and isValidTile(mat[row+1][col])): 
-        neighbours.append("{},{}".format(row+1,col))
+    if(row+1 < len(mat[:]) and isValidTile(mat[row+1][col].TileContent)): 
+        neighbours[(mat[row+1][col].Position)] = 1
 
-    if(col+1 < len(mat[0]) and isValidTile(mat[row][col+1])): 
-        neighbours.append("{},{}".format(row,col+1))
+    if(col+1 < len(mat[0]) and isValidTile(mat[row][col+1].TileContent)): 
+        neighbours[(mat[row][col+1].Position)] = 1
         
     return neighbours
 
