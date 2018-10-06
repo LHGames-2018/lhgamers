@@ -113,7 +113,7 @@ class Bot:
                     directionOOS = self.PlayerInfo.HouseLocation
                     pos = Point(min(max(directionOOS.x, gameMap.xMin+1), gameMap.xMax-1), min(max(directionOOS.y, gameMap.yMin+1), gameMap.yMax-1))
                     path = shortestPath(translate(gameMap.tiles), self.PlayerInfo.Position, pos)
-                    
+                    print(self.PlayerInfo.Position)
                     direction = path[1] - self.PlayerInfo.Position
             self.previousPosition = self.PlayerInfo.Position
             self.previousDirection = direction
