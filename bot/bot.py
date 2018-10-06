@@ -19,8 +19,8 @@ class Bot:
             :param visiblePlayers:  The list of visible players.
         """
         res = list()
-        for x in range(gameMap.xMax):
-            for y in range(gameMap.yMax):
+        for x in range(gameMap.xMin,gameMap.xMax):
+            for y in range(gameMap.yMin, gameMap.yMax):
                 if gameMap.getTileAt(Point(x,y)) == TileContent.Resource:
                     res.append(Point(x,y))
                 elif gameMap.getTileAt(Point(x,y)) == TileContent.House:
@@ -40,7 +40,11 @@ class Bot:
                     print(playerPosition)
                     position = self.getPath(playerPosition, closestRes, gameMap)
                     if not position:
-                        index+=1
+                        if not index+1 >= len(res):
+                            index+=1
+                        else:
+                            self.goingToHouse = True
+                            return
                         break
                     else:
                         playerPosition = position
