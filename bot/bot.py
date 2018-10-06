@@ -106,8 +106,15 @@ class Bot:
                         return create_move_action(Point(1, 0))
                 direction = path[1] - self.PlayerInfo.Position
             else:
-                self.goingToHouse = False 
-                return self.upgrade()
+                if self.PlayerInfo.Position == self.PlayerInfo.HouseLocation:
+                    self.goingToHouse = False 
+                    return self.upgrade()
+                else:
+                    directionOOS = self.PlayerInfo.HouseLocation
+                    pos = Point(min(max(directionOOS.x, gameMap.xMin+1), gameMap.xMax-1), min(max(directionOOS.y, gameMap.yMin+1), gameMap.yMax-1))
+                    path = shortestPath(translate(gameMap.tiles), self.PlayerInfo.Position, pos)
+                    
+                    direction = path[1] - self.PlayerInfo.Position
             self.previousPosition = self.PlayerInfo.Position
             self.previousDirection = direction
         if abs(direction.x) < abs(direction.y):
@@ -115,12 +122,16 @@ class Bot:
                 dirY = int(direction.y/abs(direction.y))
             else:
                 dirY = 0
+            if gameMap.getTileAt(self.PlayerInfo.Position + Point(0, dirY)).TileContent == TileContent.Wall:
+                return create_attack_action(Point(0, dirY))
             return create_move_action(Point(0, dirY))
         else:
             if(direction.x !=0):
                 dirX = int(direction.x/abs(direction.x))
             else:
                 dirX = 0
+            if gameMap.getTileAt(self.PlayerInfo.Position + Point(dirX, 0)).TileContent == TileContent.Wall:
+                return create_attack_action(Point(dirX, 0))
             return create_move_action(Point(dirX, 0))
         # Write your bot here. Use functions from aiHelper to instantiate your actions.
         return create_move_action(Point(-1, 0))
