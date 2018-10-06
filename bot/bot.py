@@ -18,12 +18,14 @@ class Bot:
             :param gameMap: The gamemap.
             :param visiblePlayers:  The list of visible players.
         """
+        return create_move_action(Point(-1, 0))
+
         res = list()
         for x in range(gameMap.xMin,gameMap.xMax):
             for y in range(gameMap.yMin, gameMap.yMax):
-                if gameMap.getTileAt(Point(x,y)) == TileContent.Resource:
+                if gameMap.getTileAt(Point(x,y)).TileContent == TileContent.Resource:
                     res.append(Point(x,y))
-                elif gameMap.getTileAt(Point(x,y)) == TileContent.House:
+                elif gameMap.getTileAt(Point(x,y)).TileContent == TileContent.House:
                     house = Point(x,y)
         if not self.goingToHouse:
             res.sort(key=lambda p: Point.Distance(p, self.PlayerInfo.Position))
@@ -76,7 +78,7 @@ class Bot:
             direction = self.PlayerInfo.HouseLocation - self.PlayerInfo.Position
             if direction.x ==0 and direction.y == 0 :
                 self.goingToHouse = False 
-                return create_upgrade_action(UpgradeType.CollectingSpeed)
+                return self.upgrade()
         if abs(direction.x) < abs(direction.y):
             if(direction.y != 0):
                 dirY = int(direction.y/abs(direction.y))
@@ -108,6 +110,9 @@ class Bot:
             return newPosition
         return None
 
-    def findClosestResource(self, gameMap):
-        pass
+    def upgrade(self):
+        if(self.PlayerInfo.getUpgradeLevel(UpgradeType.CollectingSpeed)< self.PlayerInfo.getUpgradeLevel(UpgradeType.CarryingCapacity) ):
+            return create_upgrade_action(UpgradeType.CollectingSpeed)
+        else:
+            return create_upgrade_action(UpgradeType.CarryingCapacity)
 
