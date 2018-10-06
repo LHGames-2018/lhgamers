@@ -63,7 +63,7 @@ class Bot:
                 else:
                     dirY = 0
                 if(dirX ==0 and dirY==0):
-                    return create_move_action(Point(-1, 0))
+                    self.goingToHouse = True
                 return create_collect_action(Point(dirX, dirY))
             if self.PlayerInfo.TotalResources >= self.PlayerInfo.CarryingCapacity:
                 self.goingToHouse = True
