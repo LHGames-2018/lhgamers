@@ -12,7 +12,7 @@ class GameMap:
     def getTileAt(self, position):
         if (position.x < self.xMin or position.x >= self.xMax or
                 position.y < self.yMin or position.y >= self.yMax):
-            return TileContent.Empty
+            return None
 
         x = position.x - self.xMin
         y = position.y - self.yMin

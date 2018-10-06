@@ -45,18 +45,21 @@ class Bot:
             index = 0
             pathFound = False
             while not pathFound:
+                if index >= len(res):
+                    self.goingToHouse = True
+                    return
                 closestRes = res[index]
 
                 path = list()
-                if gameMap.getTileAt(closestRes-Point(1,0)).TileContent == TileContent.Empty:
+                if gameMap.getTileAt(closestRes-Point(1,0)) and gameMap.getTileAt(closestRes-Point(1,0)).TileContent == TileContent.Empty:
                     path = shortestPath(translate(gameMap.tiles), self.PlayerInfo.Position, (closestRes-Point(1,0)))
                     print(path)
-                elif gameMap.getTileAt(closestRes-Point(0,1)).TileContent == TileContent.Empty and len(path) == 0 :
+                elif gameMap.getTileAt(closestRes-Point(0,1)) and gameMap.getTileAt(closestRes-Point(0,1)).TileContent == TileContent.Empty and len(path) == 0 :
                     path = shortestPath(translate(gameMap.tiles), self.PlayerInfo.Position, (closestRes-Point(0,1)))
-                elif gameMap.getTileAt(closestRes+Point(1,0)).TileContent == TileContent.Empty and len(path) == 0:
+                elif gameMap.getTileAt(closestRes+Point(1,0)) and gameMap.getTileAt(closestRes+Point(1,0)).TileContent == TileContent.Empty and len(path) == 0:
                     path = shortestPath(translate(gameMap.tiles), self.PlayerInfo.Position, (closestRes+Point(1,0)))
                     print(path)
-                elif gameMap.getTileAt(closestRes+Point(0,1)).TileContent == TileContent.Empty and len(path) == 0:
+                elif gameMap.getTileAt(closestRes+Point(0,1)) and gameMap.getTileAt(closestRes+Point(0,1)).TileContent == TileContent.Empty and len(path) == 0:
                     path = shortestPath(translate(gameMap.tiles), self.PlayerInfo.Position, (closestRes+Point(0,1)))
                 else:
                     index += 1
@@ -65,12 +68,16 @@ class Bot:
                 else:
                     index += 1
 
+                
+
+
             # direction = closestRes - self.PlayerInfo.Position
             direction = path[1] - self.PlayerInfo.Position
             print(closestRes)
             print(self.PlayerInfo.Position)
             print(direction)
             print(self.PlayerInfo.TotalResources)
+            print(self.PlayerInfo.CarriedResources)
             collectDir = closestRes - self.PlayerInfo.Position
             if Point.Distance(self.PlayerInfo.Position, closestRes) <= 1:
                 if(collectDir.x !=0):
