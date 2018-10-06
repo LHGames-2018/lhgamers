@@ -2,7 +2,8 @@ from helper import *
 
 class Bot:
     def __init__(self):
-        pass
+        self.goingToHouse = False
+
 
     def before_turn(self, playerInfo):
         """
@@ -10,7 +11,6 @@ class Bot:
             :param playerInfo: Your bot's current state.
         """
         self.PlayerInfo = playerInfo
-        self.goingToHouse = False
 
     def execute_turn(self, gameMap, visiblePlayers):
         """
@@ -21,30 +21,46 @@ class Bot:
         res = list()
         for x in range(gameMap.xMax):
             for y in range(gameMap.yMax):
-                if gameMap.getTileAt(Point(x,y)) == 4:
+                if gameMap.getTileAt(Point(x,y)) == TileContent.Resource:
                     res.append(Point(x,y))
-                elif gameMap.getTileAt(Point(x,y)) == 2:
+                elif gameMap.getTileAt(Point(x,y)) == TileContent.House:
                     house = Point(x,y)
         if not self.goingToHouse:
             minDist = float('inf')
-            closestRes = Point()
+            res.sort(key=lambda p: Point.Distance(p, self.PlayerInfo.Position))
             print(res)
-            for resource in res:
-                dist = Point.Distance(resource, self.PlayerInfo.Position)
-                if dist < minDist:
-                    minDist = dist
-                    closestRes = resource
+            index = 0
+            pathFound = False
+            while not pathFound:
+                closestRes = res[index]
+                playerPosition = self.PlayerInfo.Position
+                while Point.Distance(playerPosition, closestRes) > 1:
+                    print(playerPosition)
+                    position = self.getPath(playerPosition, closestRes, gameMap)
+                    if not position:
+                        index+=1
+                        break
+                    else:
+                        playerPosition = position
+                if Point.Distance(playerPosition, closestRes) <= 1:
+                    pathFound = True
+
+
             direction = closestRes - self.PlayerInfo.Position
+            print(closestRes)
+            print(self.PlayerInfo.Position)
+            print(direction)
+            print(self.PlayerInfo.TotalResources)
             if Point.Distance(self.PlayerInfo.Position, closestRes) <= 1:
-                return create_collect_action(direction)
+                return create_collect_action(Point(int(direction.x/abs(direction.x))))
             if self.PlayerInfo.TotalResources >= self.PlayerInfo.CarryingCapacity:
                 self.goingToHouse = True
         else:
             direction = house - self.PlayerInfo.Position
-        if direction.x < direction.y:
-            return create_move_action(Point(0, direction.y))
+        if abs(direction.x) < abs(direction.y):
+            return create_move_action(Point(0, int(direction.y/abs(direction.y))))
         else:
-            return create_move_action(Point(direction.x, 0))
+            return create_move_action(Point(int(direction.x/abs(direction.x)), 0))
         # Write your bot here. Use functions from aiHelper to instantiate your actions.
         return create_move_action(Point(-1, 0))
 
@@ -53,3 +69,14 @@ class Bot:
         Gets called after executeTurn
         """
         pass
+
+    def getPath(self, playerPosition, destination, gameMap):
+        direction = destination - playerPosition
+        if abs(direction.x) < abs(direction.y):
+            newPosition = playerPosition+(Point(0, int(direction.y/abs(direction.y))))
+        else:
+            newPosition = playerPosition+(Point(int(direction.x/abs(direction.x)), 0))
+        if gameMap.getTileAt(newPosition) == TileContent.Empty:
+            return newPosition
+        return None
+
