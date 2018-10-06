@@ -1,5 +1,4 @@
 from helper import *
-import numpy as np
 
 class Bot:
     def __init__(self):
@@ -33,6 +32,8 @@ class Bot:
                 minDist = dist
                 closestRes = resource
         direction = closestRes - self.PlayerInfo.Position
+        if Point.Distance(self.PlayerInfo.Position, closestRes):
+            return create_collect_action(direction)
         if direction.x < direction.y:
             return create_move_action(Point(0, direction.y))
         else:
