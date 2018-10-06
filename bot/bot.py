@@ -66,6 +66,8 @@ class Bot:
                 self.goingToHouse = True
         else:
             direction = house - self.PlayerInfo.Position
+            if direction.x ==0 and direction.y == 0 :
+                self.goingToHouse = False
         if abs(direction.x) < abs(direction.y):
             if(direction.y != 0):
                 dirY = int(direction.y/abs(direction.y))
