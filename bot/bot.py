@@ -85,8 +85,8 @@ class Bot:
             if(self.previousPosition == self.PlayerInfo.Position):
                 if(gameMap.getTileAt(self.PlayerInfo.Position+self.previousDirection).TileContent == TileContent.Wall):
                     return create_attack_action(self.previousDirection)
-                if(self.previousDirection.y != -1):
-                    return create_move_action(Point(0,-1))
+                if(self.previousDirection.x != -1):
+                    return create_move_action(Point(-1,0))
                 else :
                     return create_move_action(Point(1, 0))
             direction = self.PlayerInfo.HouseLocation - self.PlayerInfo.Position
