@@ -28,13 +28,14 @@ class Bot:
         if not self.goingToHouse:
             minDist = float('inf')
             closestRes = Point()
+            print(res)
             for resource in res:
                 dist = Point.Distance(resource, self.PlayerInfo.Position)
                 if dist < minDist:
                     minDist = dist
                     closestRes = resource
             direction = closestRes - self.PlayerInfo.Position
-            if Point.Distance(self.PlayerInfo.Position, closestRes):
+            if Point.Distance(self.PlayerInfo.Position, closestRes) <= 1:
                 return create_collect_action(direction)
             if self.PlayerInfo.TotalResources >= self.PlayerInfo.CarryingCapacity:
                 self.goingToHouse = True
@@ -45,7 +46,7 @@ class Bot:
         else:
             return create_move_action(Point(direction.x, 0))
         # Write your bot here. Use functions from aiHelper to instantiate your actions.
-        return create_move_action(Point(1, 0))
+        return create_move_action(Point(-1, 0))
 
     def after_turn(self):
         """
