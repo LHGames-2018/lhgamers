@@ -5,14 +5,16 @@ from extra.pathfinding import *
 from helper.tile import *
 from math import *
 def getPath(gameMap, position, destination):
-    mapTile = [][]
-    mapContent = [][]
+    mapTile = []
+    mapContent = []
     for i in range(gameMap.xMin, gameMap.xMax):
+        mapTile[i] = []
+        mapContent[i] = []
         for j in range(gameMap.yMin, gameMap.yMax):
             mapTile[i][j] = gameMap.tiles[i][j]
             mapContent[i][j] = gameMap.tiles[index].TileContent
-    subMapTile = [][]
-    subMapContent = [][]
+    subMapTile = []
+    subMapContent = []
     x = -1
     y = -1
     posDepartX = 0
@@ -22,6 +24,8 @@ def getPath(gameMap, position, destination):
 
     for i in range(position.x, destination.x, copysign(-1,destination.x - postion.x)):
         x+=1
+        subMapTile[x] = []
+        subMapContent[x] = []
         for j in range(gameMap.yMin, gameMap.yMax, copysign(-1,destination.y - postion.y)):
             subMapTile[x][y] = mapTile[i][j]
             subMapContent[x][y] = mapTile[i][j].TileContent
