@@ -41,9 +41,9 @@ class Bot:
         else:
             direction = house - self.PlayerInfo.Position
         if direction.x < direction.y:
-                return create_move_action(Point(0, direction.y))
-            else:
-                return create_move_action(Point(direction.x, 0))
+            return create_move_action(Point(0, direction.y))
+        else:
+            return create_move_action(Point(direction.x, 0))
         # Write your bot here. Use functions from aiHelper to instantiate your actions.
         return create_move_action(Point(1, 0))
 
