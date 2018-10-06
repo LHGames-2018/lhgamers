@@ -1,5 +1,5 @@
 from helper import *
-
+import numpy as np
 
 class Bot:
     def __init__(self):
@@ -18,7 +18,25 @@ class Bot:
             :param gameMap: The gamemap.
             :param visiblePlayers:  The list of visible players.
         """
-
+        res = list()
+        for x in gameMap.xMax:
+            for y in gameMap.yMax:
+                if gameMap.getTileAt(Point(x,y)) == 4:
+                    res.append(Point(x,y))
+                elif gameMap.getTileAt(Point(x,y)) == 2:
+                    house = Point(x,y)
+        minDist = float('inf')
+        closestRes = None
+        for resource in res:
+            dist = Point.Distance(resource, self.PlayerInfo.Position)
+            if dist < minDist:
+                minDist = dist
+                closestRes = resource
+        direction = closestRes - self.PlayerInfo.Position
+        if direction.x < direction.y:
+            return create_move_action(Point(0, direction.y))
+        else:
+            return create_move_action(Point(direction.x, 0))
         # Write your bot here. Use functions from aiHelper to instantiate your actions.
         return create_move_action(Point(1, 0))
 
