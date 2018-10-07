@@ -41,4 +41,4 @@ def neighbours(row,col,mat):
 
 
 def isValidTile(tileContent):
-    return tileContent == TileContent.Empty or tileContent == TileContent.House or tileContent == TileContent.Shop or tileContent == TileContent.Wall or tileContent == TileContent.Resource
+    return tileContent == TileContent.Empty or tileContent == TileContent.Shop or tileContent == TileContent.Wall or tileContent == TileContent.Resource
