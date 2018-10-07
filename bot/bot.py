@@ -122,7 +122,7 @@ class Bot:
                 dirY = int(direction.y/abs(direction.y))
             else:
                 dirY = 0
-            if gameMap.getTileAt(self.PlayerInfo.Position + Point(0, dirY)).TileContent == TileContent.Wall:
+            if gameMap.getTileAt(self.PlayerInfo.Position + Point(0, dirY)).TileContent == TileContent.Wall or gameMap.getTileAt(self.PlayerInfo.Position + Point(0, dirY)).TileContent == TileContent.Resource:
                 return create_attack_action(Point(0, dirY))
             return create_move_action(Point(0, dirY))
         else:
@@ -130,7 +130,7 @@ class Bot:
                 dirX = int(direction.x/abs(direction.x))
             else:
                 dirX = 0
-            if gameMap.getTileAt(self.PlayerInfo.Position + Point(dirX, 0)).TileContent == TileContent.Wall:
+            if gameMap.getTileAt(self.PlayerInfo.Position + Point(dirX, 0)).TileContent == TileContent.Wall or gameMap.getTileAt(self.PlayerInfo.Position + Point(dirX, 0)).TileContent == TileContent.Resource:
                 return create_attack_action(Point(dirX, 0))
             return create_move_action(Point(dirX, 0))
         # Write your bot here. Use functions from aiHelper to instantiate your actions.
